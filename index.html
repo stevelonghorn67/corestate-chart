@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Corestate Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #ffffff;
+    }
+    canvas {
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="corestateChart"></canvas>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const values = urlParams.get('data')?.split(',').map(Number) || [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+
+    const data = {
+      labels: [
+        "Wellness 1", "Wellness 2", "Wellness 3", "Wellness 4",
+        "Well-being 1", "Well-being 2", "Well-being 3", "Well-being 4",
+        "Vitality 1", "Vitality 2", "Vitality 3", "Vitality 4"
+      ],
+      datasets: [{
+        label: "Corestate Profile",
+        data: values,
+        fill: true,
+        backgroundColor: "rgba(255,99,132,0.2)",
+        borderColor: "rgba(255,99,132,1)",
+        pointBackgroundColor: "rgba(255,99,132,1)",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgba(255,99,132,1)"
+      }]
+    };
+
+    new Chart(document.getElementById("corestateChart"), {
+      type: 'radar',
+      data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          r: {
+            angleLines: { display: false },
+            suggestedMin: 1,
+            suggestedMax: 5,
+            ticks: {
+              stepSize: 1
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
