@@ -1,60 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    height: 100%;
-  }
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-</style>
-
-<style>
-  body {
-    overflow: hidden;
-    margin: 0;
-  }
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-</style>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Corestate Chart</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body style="margin: 0; padding: 0; background: #ffffff;">
-  <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <canvas id="corestateChart" width="600" height="600"></canvas>
-  </div>
-</body>
-
+  <canvas id="corestateChart" width="800" height="800"></canvas>
 
   <script>
-    // Parse slider values from the URL query string
-    function getSliderValues() {
-      const params = new URLSearchParams(window.location.search);
-      const valuesParam = params.get("v");
-      if (!valuesParam) return [];
-      return valuesParam.split(",").map(Number);
-    }
-
-    const values = getSliderValues();
-
-    const labels = [
-      "Wellness 1", "Wellness 2", "Wellness 3",
-      "Wellness 4", "Wellness 5", "Wellbeing 1",
-      "Wellbeing 2", "Wellbeing 3", "Wellbeing 4"
-    ];
+    const urlParams = new URLSearchParams(window.location.search);
+    const valuesParam = urlParams.get("v");
+    const values = valuesParam ? valuesParam.split(",").map(Number) : Array(12).fill(2);
 
     const data = {
-      labels: labels,
+      labels: [
+        "Wellness 1", "Wellness 2", "Wellness 3", "Wellness 4",
+        "Wellbeing 1", "Wellbeing 2", "Wellbeing 3", "Wellbeing 4",
+        "Vitality 1", "Vitality 2", "Vitality 3", "Vitality 4"
+      ],
       datasets: [{
         label: "Corestate Profile",
         data: values,
@@ -68,28 +32,24 @@
       }]
     };
 
-   const ctx = document.getElementById("corestateChart");
-
-const config = {
-  type: "radar",
-  data: data,
-  options: {
-    responsive: true,
-    maintainAspectRatio: true,
-    scales: {
-      r: {
-        suggestedMin: 0,
-        suggestedMax: 5,
-        angleLines: { display: false },
-        pointLabels: {
-          font: { size: 14 }
-        },
-        ticks: {
-          stepSize: 1
+    new Chart(document.getElementById("corestateChart"), {
+      type: "radar",
+      data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          r: {
+            suggestedMin: 0,
+            suggestedMax: 5,
+            ticks: {
+              stepSize: 1
+            }
+          }
         }
       }
-    }
-  }
-};
+    });
+  </script>
+</body>
+</html>
 
-new Chart(ctx, config);
