@@ -68,24 +68,28 @@
       }]
     };
 
-    new Chart(document.getElementById("corestateChart"), {
-      type: "radar",
-      data: data,
-      options: {
-  responsive: true,
-  maintainAspectRatio: false,
-        scales: {
-          r: {
-            angleLines: { display: false },
-            suggestedMin: 1,
-            suggestedMax: 5,
-            ticks: {
-              stepSize: 1
-            }
-          }
+   const ctx = document.getElementById("corestateChart");
+
+const config = {
+  type: "radar",
+  data: data,
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+      r: {
+        suggestedMin: 0,
+        suggestedMax: 5,
+        angleLines: { display: false },
+        pointLabels: {
+          font: { size: 14 }
+        },
+        ticks: {
+          stepSize: 1
         }
       }
-    });
-  </script>
-</body>
-</html>
+    }
+  }
+};
+
+new Chart(ctx, config);
