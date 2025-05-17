@@ -1,62 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Corestate Bar Chart</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    canvas {
-      width: 100% !important;
-      height: 100% !important;
-    }
-  </style>
 </head>
-<body>
-  <canvas id="coreChart"></canvas>
+<body style="margin: 0; padding: 0; background: #fff;">
+  <canvas id="coreChart" width="800" height="400"></canvas>
 
   <script>
-    let chart;
-
-    function drawChart(scores) {
-      const ctx = document.getElementById('coreChart').getContext('2d');
-
-      if (chart) chart.destroy();
-
-      chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Wellness', 'Wellbeing', 'Vitality'],
-          datasets: [{
-            label: 'Corestate Score',
-            data: scores,
-            backgroundColor: ['rgba(0, 102, 204, 0.6)', 'rgba(220, 53, 69, 0.6)', 'rgba(40, 167, 69, 0.6)'],
-            borderColor: ['rgba(0, 102, 204, 1)', 'rgba(220, 53, 69, 1)', 'rgba(40, 167, 69, 1)'],
-            borderWidth: 1
-          }]
+    const ctx = document.getElementById("coreChart").getContext("2d");
+    let coreChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Wellness", "Wellbeing", "Vitality"],
+        datasets: [{
+          label: "Corestate Score",
+          backgroundColor: "#A30000",
+          data: [2, 2, 2], // placeholder, will update via WIX
+        }],
+      },
+      options: {
+        responsive: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 5,
+            ticks: { stepSize: 1 },
+          },
         },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 20
-            }
-          }
-        }
-      });
-    }
-
-    window.addEventListener('message', (event) => {
-      if (event.data && Array.isArray(event.data.scores)) {
-        drawChart(event.data.scores);
-      }
+      },
     });
+
+    // Allow WIX page to update chart using window.coreChart
+    window.coreChart = coreChart;
   </script>
 </body>
 </html>
+
 
 
