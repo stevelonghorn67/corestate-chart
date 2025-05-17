@@ -9,7 +9,7 @@
   <canvas id="coreChart" width="800" height="400"></canvas>
 
   <script>
-    // minor update for sync
+    // minor change to enforce y-axis scale
     const ctx = document.getElementById("coreChart").getContext("2d");
     let coreChart = new Chart(ctx, {
       type: "bar",
@@ -17,18 +17,24 @@
         labels: ["Wellness", "Wellbeing", "Vitality"],
         datasets: [{
           label: "Corestate Score",
-          data: [2, 2, 2], // placeholder, will update via WIX
+          data: [2, 2, 2],
           backgroundColor: ["#1e3a8a", "#dc2626", "#0f766e"],
           borderRadius: 6
         }]
       },
       options: {
         responsive: false,
+        maintainAspectRatio: false,
         scales: {
           y: {
             beginAtZero: true,
             max: 5,
-            ticks: { stepSize: 1 }
+            ticks: {
+              stepSize: 1,
+              callback: function (value) {
+                return value.toFixed(0); // optional: force integers on y-axis
+              }
+            }
           }
         },
         plugins: {
@@ -42,11 +48,11 @@
       }
     });
 
-    // Allow WIX page to update chart using window.coreChart
     window.coreChart = coreChart;
   </script>
 </body>
 </html>
+
 
 
 
