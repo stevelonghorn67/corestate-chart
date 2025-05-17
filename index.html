@@ -1,55 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Corestate Chart</title>
+  <meta charset="UTF-8" />
+  <title>Corestate Bar Chart</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  </style>
 </head>
-<body style="margin: 0; padding: 0; background: #ffffff;">
-  <canvas id="corestateChart" width="800" height="800"></canvas>
+<body>
+  <canvas id="coreChart"></canvas>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const valuesParam = urlParams.get("v");
-    const values = valuesParam ? valuesParam.split(",").map(Number) : Array(12).fill(2);
+    let chart;
 
-    const data = {
-      labels: [
-        "Wellness 1", "Wellness 2", "Wellness 3", "Wellness 4",
-        "Wellbeing 1", "Wellbeing 2", "Wellbeing 3", "Wellbeing 4",
-        "Vitality 1", "Vitality 2", "Vitality 3", "Vitality 4"
-      ],
-      datasets: [{
-        label: "Corestate Profile",
-        data: values,
-        fill: true,
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        pointBackgroundColor: "#fff",
-        pointBorderColor: "rgba(255, 99, 132, 1)",
-        pointHoverBackgroundColor: "#fff",
-        pointHoverBorderColor: "rgba(255, 99, 132, 1)"
-      }]
-    };
+    function drawChart(scores) {
+      const ctx = document.getElementById('coreChart').getContext('2d');
 
-    new Chart(document.getElementById("corestateChart"), {
-      type: "radar",
-      data: data,
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          r: {
-            suggestedMin: 0,
-            suggestedMax: 5,
-            ticks: {
-              stepSize: 1
+      if (chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Wellness', 'Wellbeing', 'Vitality'],
+          datasets: [{
+            label: 'Corestate Score',
+            data: scores,
+            backgroundColor: ['rgba(0, 102, 204, 0.6)', 'rgba(220, 53, 69, 0.6)', 'rgba(40, 167, 69, 0.6)'],
+            borderColor: ['rgba(0, 102, 204, 1)', 'rgba(220, 53, 69, 1)', 'rgba(40, 167, 69, 1)'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 20
             }
           }
         }
+      });
+    }
+
+    window.addEventListener('message', (event) => {
+      if (event.data && Array.isArray(event.data.scores)) {
+        drawChart(event.data.scores);
       }
     });
   </script>
 </body>
 </html>
+
 
